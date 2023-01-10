@@ -14,7 +14,7 @@ const verificarWatchedAt = (req, res, next) => {
 };
 
 const formatoCorreto = (data) => {
-  const [dia, mes, ano] = data.split("/");
+  const [dia, mes, ano] = data.split('/');
 
   if (!dia || !mes || !ano) {
     return false;

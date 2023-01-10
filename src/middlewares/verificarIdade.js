@@ -6,7 +6,7 @@ const verificarIdade = (req, res, next) => {
     });
   } else if (age < 18) {
     res.status(400).send({
-      message: "A pessoa palestrante deve ser maior de idade",
+      message: 'A pessoa palestrante deve ser maior de idade',
     });
   } else {
     next();
