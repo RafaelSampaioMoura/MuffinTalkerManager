@@ -28,10 +28,17 @@ roteador.put(
     const { id } = talker;
     const novoPalestrante = { id, ...req.body };
     talkers[id - 1] = novoPalestrante;
-    await writeFile(JSON.stringify(novoPalestrante, null, 2));
+    await writeFile(JSON.stringify(talkers, null, 2));
     res.status(200).json(novoPalestrante);
   }
 );
+
+roteador.post("/login", verificarEmail, verificarSenha, async (__req, res) => {
+  const rndToken = tokenGenerator.randomBytes(8).toString("hex");
+  res.status(HTTP_OK_STATUS).send({
+    token: `${rndToken}`,
+  });
+});
 
 roteador.post(
   "/talker",
@@ -45,24 +52,17 @@ roteador.post(
     const data = await readFile();
     const novoPalestrante = { id: data.length + 1, ...req.body };
     data.push(novoPalestrante);
-    await writeFile(JSON.stringify(novoPalestrante, null, 2));
+    await writeFile(JSON.stringify(data, null, 2));
     res.status(201).json(novoPalestrante);
   }
 );
-
-roteador.post("/login", verificarEmail, verificarSenha, async (__req, res) => {
-  const rndToken = tokenGenerator.randomBytes(8).toString("hex");
-  res.status(HTTP_OK_STATUS).send({
-    token: `${rndToken}`,
-  });
-});
 
 roteador.get("/talker", async (_req, res) => {
   const data = await readFile();
   if (data.length === 0) {
     return res.status(HTTP_OK_STATUS).send([]);
   }
-  res.status(HTTP_OK_STATUS).send(data);
+  res.status(HTTP_OK_STATUS).json(data);
 });
 
 roteador.get("/talker/:id", async (req, res) => {
