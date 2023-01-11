@@ -4,11 +4,18 @@ const { readFile, writeFile } = require('../utils/FileSync');
 const verificarEmail = require('../middlewares/verificarEmail');
 const verificarIdade = require('../middlewares/verificarIdade');
 const verificarNome = require('../middlewares/verificarNome');
-const verificarRate = require('../middlewares/verificarRate');
+const {
+  verificarRateSeZero,
+  verificarRateExiste,
+  verificarRateNoLimite,
+} = require('../middlewares/verificarRate');
 const verificarSenha = require('../middlewares/verificarSenha');
 const verificarTalk = require('../middlewares/verificarTalk');
 const verificarToken = require('../middlewares/verificarToken');
-const verificarWatchedAt = require('../middlewares/verificarWatchedAt');
+const {
+  verificarWatchedAtExiste,
+  verificarWatchedAtFormato,
+} = require('../middlewares/verificarWatchedAt');
 
 const roteador = express.Router();
 
@@ -20,8 +27,11 @@ roteador.put(
   verificarNome,
   verificarIdade,
   verificarTalk,
-  verificarWatchedAt,
-  verificarRate,
+  verificarWatchedAtExiste,
+  verificarWatchedAtFormato,
+  verificarRateSeZero,
+  verificarRateExiste,
+  verificarRateNoLimite,
   async (req, res) => {
     const talkers = await readFile();
     const talker = talkers.find(({ id }) => id === Number(req.params.id));
@@ -46,8 +56,11 @@ roteador.post(
   verificarNome,
   verificarIdade,
   verificarTalk,
-  verificarWatchedAt,
-  verificarRate,
+  verificarWatchedAtExiste,
+  verificarWatchedAtFormato,
+  verificarRateExiste,
+  verificarRateSeZero,
+  verificarRateNoLimite,
   async (req, res) => {
     const data = await readFile();
     const novoPalestrante = { id: data.length + 1, ...req.body };
