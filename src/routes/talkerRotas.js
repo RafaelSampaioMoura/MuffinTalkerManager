@@ -21,6 +21,22 @@ const roteador = express.Router();
 
 const HTTP_OK_STATUS = 200;
 const HTTP_NOT_FOUND_STATUS = 404;
+
+roteador.get('/talker/search', verificarToken, async (req, res) => {
+  const { q } = req.query;
+  const data = await readFile();
+
+  const searchResults = data.filter(({ name }) => name.includes(q));
+
+  if (!q) {
+    res.status(200).json(data);
+  } else if (searchResults.length === 0) {
+    res.status(200).send([]);
+  } else {
+    res.status(200).json(searchResults);
+  }
+});
+
 roteador.put(
   '/talker/:id',
   verificarToken,
