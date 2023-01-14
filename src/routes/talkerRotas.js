@@ -89,4 +89,18 @@ roteador.get('/talker/:id', async (req, res) => {
   res.status(HTTP_OK_STATUS).json(talker);
 });
 
+roteador.delete('/talker/:id', verificarToken, async (req, res) => {
+  const { id } = req.params;
+  const data = await readFile();
+  const toDelete = data.find((talker) => talker.id === Number(id));
+  if (!toDelete) {
+    res
+      .status(404)
+      .json({ message: 'Nenhum palestrante com esse ID encontrato.' });
+  }
+  data.splice(data.indexOf(toDelete), 1);
+  await writeFile(JSON.stringify(data, null, 2));
+  res.status(204).send();
+});
+
 module.exports = roteador;
